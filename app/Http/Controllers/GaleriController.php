@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Galeri;
 use App\Models\GaleriT;
-
+use App\Models\User;
+use Auth;
 class GaleriController extends Controller
 {
     /**
@@ -21,9 +22,25 @@ class GaleriController extends Controller
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
  
+    public function show(GaleriT $galeri)
+    {
+        $image = Galeri::where('idpost',$galeri->id)->get();  
+        return view('galeri.show',compact('galeri','image'));
+    }
+
     public function create()
     {
-        return view('galeri.create');
+        if (Auth::guest()){
+        return redirect()->route('galeri.index');
+        }
+        else{
+             if(Auth::User()->role == 1){
+             return view('galeri.create');
+             }
+            else{
+            return redirect()->route('galeri.index');
+            }
+        }
     }
  
     public function store(Request $request)
@@ -69,15 +86,20 @@ class GaleriController extends Controller
         return redirect()->route('galeri.index')->with('success','Galeri created successfully.');
     }
  
-    public function show(GaleriT $galeri)
-    {
-        $image = Galeri::where('idpost',$galeri->id)->get();  
-        return view('galeri.show',compact('galeri','image'));
-    }
  
     public function edit(Galeri $galeri)
     {
-        return view('galeri.edit',compact('galeri'));
+        if (Auth::guest()){
+        return redirect()->route('galeri.index');
+        }
+        else{
+             if(Auth::User()->role == 1){
+             return view('galeri.edit',compact('galeri'));
+             }
+             else{
+             return redirect()->route('galeri.index');
+            }
+        }
     }
  
     public function update(Request $request, $id)
@@ -110,8 +132,10 @@ class GaleriController extends Controller
     }
 
     //Slideshow
+
       public function slideshow()
     {
+        
         $image = Galeri::where('type','slideshow')->orderBy('id','ASC')->get(); 
         return view('galeri.slideshow.index',compact('image'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
@@ -159,6 +183,5 @@ class GaleriController extends Controller
         $post->save();   
         return redirect()->route('slideshow')->with('success','Slideshow updated successfully.');
     }
- 
  
 }

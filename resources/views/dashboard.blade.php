@@ -16,17 +16,22 @@
       <li><a href="{{url('galeri')}}"><i class="material-icons left">collections</i>Galeri</a></li>
       <!-- Dropdown Trigger -->
        @if (Auth::guest())
-       <li style="width: 150px;overflow: hidden;"><a class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons left">supervised_user_circle</i>User<i class="material-icons right">arrow_drop_down</i></a></li>
-        @else
+       <li style="width: 150px;overflow: hidden;"><a class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons left">supervised_user_circle</i>Guest<i class="material-icons right">arrow_drop_down</i></a></li>
+        @elseif(Auth::user()->role==1)
         <li style="width: 150px;overflow: hidden;"><a class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons left">supervised_user_circle</i>Admin<i class="material-icons right">arrow_drop_down</i></a></li>
+        @else
+        <li style="width: 150px;overflow: hidden;"><a class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons left">supervised_user_circle</i>User<i class="material-icons right">arrow_drop_down</i></a></li>
         @endif
     </ul>
      <ul id="dropdown1" class="dropdown-content">
-     	<li><a href="{{ route('slideshow') }}" class="waves-effect waves-light"><i class="material-icons left">slideshow</i>Slideshow</a></li>
-        <li class="divider"></li>
         @if (Auth::guest())
         <li><a href="{{url('login')}}" class="waves-effect waves-light"><i class="material-icons left">exit_to_app</i>Login</a></li>
         @else
+        @if(Auth::user()->role==1)	
+     	<li><a href="{{ route('slideshow') }}" class="waves-effect waves-light"><i class="material-icons left">slideshow</i>Slideshow</a></li>
+        <li class="divider"></li>
+        @else
+        @endif
         <li><a href="{{ url('/logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="waves-effect waves-light"><i class="material-icons left">exit_to_app</i>Logout</a></li>
         <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">{{ csrf_field() }}</form>
         @endif

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Blog;
 use Illuminate\Support\Facades\Storage;
+use Auth;
 
 class BlogController extends Controller
 {
@@ -20,10 +21,20 @@ class BlogController extends Controller
         return view('blog.index',compact('blog'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
- 
+    
     public function create()
     {
-        return view('blog.create');
+        if (Auth::guest()){
+        return redirect()->route('blog.index');
+        }
+        else{
+             if(Auth::User()->role == 1){
+            return view('blog.create');
+             }
+             else{
+             return redirect()->route('blog.index');
+            }
+        }
     }
  
     public function store(Request $request)
@@ -50,7 +61,17 @@ class BlogController extends Controller
  
     public function edit(Blog $blog)
     {
-        return view('blog.edit',compact('blog'));
+        if (Auth::guest()){
+        return redirect()->route('blog.index');
+        }
+        else{
+             if(Auth::User()->role == 1){
+            return view('blog.edit',compact('blog'));
+             }
+             else{
+             return redirect()->route('blog.index');
+            }
+        }    
     }
  
     public function update(Request $request, $id)

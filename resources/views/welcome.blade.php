@@ -15,6 +15,7 @@
             <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
             <a class="next" onclick="plusSlides(1)">&#10095;</a>
         </div>
+        <br>
 		   	<div class="row">
 		   		<div class="col s12 m12">
 		   			@if(count($blog)==0)
@@ -25,7 +26,7 @@
 				        <strong> Blog</strong>
 				    </header>
 				   	@foreach ($blog as $post)
-				   <div class="row">
+				   <div class="row padding10">
 				    <div class="col s12 m6">
 				      <div class="card">
 				        <div class="card-image">
@@ -53,8 +54,8 @@
 			        <strong> Gallery</strong>
 			    </header>
 				  @foreach ($title as $post)
-				 	
-				   <div class="row">
+				 	@php $images =App\Models\Galeri::where('type','galeri')->where('idpost',$post->id)->first(); @endphp
+				   <div class="row padding10">
 				    <div class="col s12 m12">
 				    <a href="{{ route('galeri.show',$post->id) }}">
 				      <div class="card">

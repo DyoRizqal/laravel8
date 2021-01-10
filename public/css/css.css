@@ -145,7 +145,7 @@ width: 12%;
 
 .container {
   display: flex;
-  width: 50%;
+  width: 100%;
   padding: 4% 2%;
   box-sizing: border-box;
   height: 100vh;

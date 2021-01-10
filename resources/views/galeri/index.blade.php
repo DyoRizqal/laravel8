@@ -2,10 +2,13 @@
  
 @section('content')
 <title>Galeri Index</title>
-    <header style="background: #b6445e; padding: 13px; color: #FFF; font-size: 15pt;">
-        <strong>Galeri</strong>
-            <a class="right btn btn-secondary" href="{{ route('galeri.create') }}"> Create Post</a>
-    </header>
+         @if (Auth::guest())
+         @elseif(Auth::user()->role==1)
+          <header style="background: #b6445e; padding: 13px; color: #FFF; font-size: 15pt;">
+              <strong>Galeri</strong>
+                  <a class="right btn btn-secondary" href="{{ route('galeri.create') }}"> Create Post</a>
+          </header>
+          @endif
     <br>
     @if ($message = Session::get('success'))
     <div class="alert alert-success">
